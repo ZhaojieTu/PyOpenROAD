@@ -1,5 +1,5 @@
 int cmd_argc = 1;
-const char* default_argv = "openroadpy";
+const char* default_argv = "pyopenroad";
 char** cmd_argv = const_cast<char**>(&default_argv);
 
 #include <tcl.h>
@@ -21,7 +21,7 @@ char** cmd_argv = const_cast<char**>(&default_argv);
 using std::string;
 
 // Define internal module variables to replace external variables
-static const char* internal_prog_name = "openroadpy";
+static const char* internal_prog_name = "pyopenroad";
 static char** internal_argv = const_cast<char**>(&internal_prog_name);
 static int internal_argc = 1;
 
@@ -121,7 +121,7 @@ static PyObject* createOpenRoadModule()
 {
   static struct PyModuleDef moduledef = {
       PyModuleDef_HEAD_INIT,
-      "openroadpy",                    // Module name
+      "pyopenroad",                    // Module name
       nullptr,                         // Module documentation
       -1,                              // Size per interpreter state
       nullptr,                         // Method table
@@ -163,7 +163,7 @@ static PyObject* createOpenRoadModule()
 
 // Python module initialization function
 PyMODINIT_FUNC
-PyInit_openroadpy(void)
+PyInit_pyopenroad(void)
 {
   // Initialize OpenRoad components
   if (!initOpenRoadComponents()) {

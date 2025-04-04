@@ -3,7 +3,7 @@ import shutil
 
 
 def create_openroad_core_package(destination):
-    core_lib_path = "python/openroadpy.so"
+    core_lib_path = "python/pyopenroad.so"
     package_full_path = os.path.join(destination,"openroad_core")
     os.makedirs(package_full_path,exist_ok=True)
 
@@ -22,7 +22,7 @@ setup(
     version='0.1.0',
     packages=find_packages(),
     package_data={
-        'openroad_core': ['openroadpy.so'],  
+        'openroad_core': ['pyopenroad.so'],  
     },
     include_package_data=True,
     zip_safe=False, 
@@ -45,7 +45,7 @@ recursive-include openroad_core *.so
     with open(init_file_path, "w") as f:
         f.write("")    
 
-    inner_core_lib_path = os.path.join(inner_package_full_path, "openroadpy.so") 
+    inner_core_lib_path = os.path.join(inner_package_full_path, "pyopenroad.so") 
     shutil.copy(core_lib_path, inner_core_lib_path)
 
 
@@ -99,8 +99,8 @@ else:
     import _{package_name}_py
 """,
         f"""
-from openroad_core import openroadpy
-_{package_name}_py = openroadpy._{package_name}_py
+from openroad_core import pyopenroad
+_{package_name}_py = pyopenroad._{package_name}_py
 """
     )
 
@@ -159,8 +159,8 @@ else:
     import _openroad_swig_py
 """,
         f"""
-from openroad_core import openroadpy
-_openroad_swig_py = openroadpy._openroad_swig_py
+from openroad_core import pyopenroad
+_openroad_swig_py = pyopenroad._openroad_swig_py
 """
     )
 

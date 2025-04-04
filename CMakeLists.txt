@@ -30,7 +30,7 @@ add_library(pymodule_openroad MODULE ${PYMODULE_SOURCE})
 
 set_target_properties(pymodule_openroad PROPERTIES
 PREFIX ""
-OUTPUT_NAME "openroadpy"
+OUTPUT_NAME "pyopenroad"
 LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/python
 )
   
