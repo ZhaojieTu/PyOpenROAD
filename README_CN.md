@@ -2,7 +2,7 @@
 
 [English](README.md) | [中文](README_CN.md)
 
-PyOpenroad(PyOR)是非官方的[OpenROAD](https://github.com/The-OpenROAD-Project/OpenROAD)的外部Python库，可以直接通过`pip install`安装在本地的Python解释器中，而不是只能在OpenROAD环境中使用。
+PyOpenroad(PyOR)是**非官方**的[OpenROAD](https://github.com/The-OpenROAD-Project/OpenROAD)的外部Python库，可以直接通过`pip install`安装在本地的Python解释器中，而不是只能在OpenROAD环境中使用。
 
 ## 项目简介
 

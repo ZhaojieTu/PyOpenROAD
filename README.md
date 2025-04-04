@@ -2,7 +2,7 @@
 
 [English](README.md) | [中文](README_CN.md)
 
-PyOpenROAD(PyOR) is an unofficial Python library for [OpenROAD](https://github.com/The-OpenROAD-Project/OpenROAD) that can be installed directly via `pip` into your local Python interpreter, rather than being limited to use within the OpenROAD environment.
+PyOpenROAD(PyOR) is an **unofficial** Python library for [OpenROAD](https://github.com/The-OpenROAD-Project/OpenROAD) that can be installed directly via `pip` into your local Python interpreter, rather than being limited to use within the OpenROAD environment.
 
 ## Project Overview
 
