@@ -1,6 +1,6 @@
 int cmd_argc = 1;
-char* default_argv = (char*)"openroadpy";
-char** cmd_argv = &default_argv;
+const char* default_argv = "openroadpy";
+char** cmd_argv = const_cast<char**>(&default_argv);
 
 #include <tcl.h>
 #define PY_SSIZE_T_CLEAN
@@ -21,8 +21,8 @@ char** cmd_argv = &default_argv;
 using std::string;
 
 // Define internal module variables to replace external variables
-static char* internal_prog_name = (char*)"openroadpy";
-static char** internal_argv = &internal_prog_name;
+static const char* internal_prog_name = "openroadpy";
+static char** internal_argv = const_cast<char**>(&internal_prog_name);
 static int internal_argc = 1;
 
 #define FOREACH_TOOL_WITHOUT_OPENROAD(X) \
