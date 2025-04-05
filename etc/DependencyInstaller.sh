@@ -160,7 +160,7 @@ _installCommonDev() {
         git clone --depth=1 -b ${cuddVersion} https://github.com/The-OpenROAD-Project/cudd.git
         cd cudd
         autoreconf
-        ./configure --prefix=${cuddPrefix}
+        ./configure --prefix=${cuddPrefix} --with-pic CFLAGS="-fPIC" CXXFLAGS="-fPIC"
         make -j $(nproc) install
     else
         echo "Cudd already installed."
