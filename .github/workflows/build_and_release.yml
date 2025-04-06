@@ -14,8 +14,13 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Set execute permission for build scripts
-        run: chmod +x ./etc/BuildMultiPythonPackage.sh
+      - name: Make build scripts executable
+        run: |
+          chmod +x ./etc/BuildPythonPackage.sh
+          chmod +x ./etc/BuildMultiPythonPackage.sh
+
+      - name: Run dependency preparation script
+        run: ./etc/BuildPythonPackage.sh
 
       - name: Build wheels for all Python versions
         run: |
