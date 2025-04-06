@@ -1,0 +1,31 @@
+name: Build and Release Python Wheels
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      image: quay.io/pypa/manylinux_2_34_x86_64
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set execute permission for build scripts
+        run: chmod +x ./etc/BuildMultiPythonPackage.sh
+
+      - name: Build wheels for all Python versions
+        run: |
+          for PY_VER in 3.7 3.8 3.9 3.10 3.11 3.12 3.13; do
+            ./etc/BuildMultiPythonPackage.sh $PY_VER || exit 1
+          done
+
+      - name: Upload wheels to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: /io/dist/*.whl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
