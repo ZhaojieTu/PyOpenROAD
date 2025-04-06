@@ -1,12 +1,13 @@
 name: Build and Release Python Wheels
 
 on:
-  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     container:
       image: quay.io/pypa/manylinux_2_34_x86_64
 
