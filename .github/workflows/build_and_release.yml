@@ -22,7 +22,7 @@ jobs:
         run: |
           chmod +x ./etc/BuildPythonPackage.sh
           chmod +x ./etc/BuildMultiPythonPackage.sh
-          ./etc/BuildPythonPackage.sh
+          ./etc/BuildPythonPackage.sh > /dev/null 2>&1
       
           export PATH="/opt/conda/bin:$PATH"
           eval "$(/opt/conda/bin/conda shell.bash hook)"
