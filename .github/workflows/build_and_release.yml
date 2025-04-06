@@ -24,6 +24,7 @@ jobs:
 
       - name: Build wheels for all Python versions
         run: |
+          export PATH="/opt/conda/bin:$PATH"
           for PY_VER in 3.7 3.8 3.9 3.10 3.11 3.12 3.13; do
             ./etc/BuildMultiPythonPackage.sh $PY_VER || exit 1
           done
