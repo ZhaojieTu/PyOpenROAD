@@ -11,8 +11,10 @@ jobs:
       image: quay.io/pypa/manylinux_2_34_x86_64
 
     steps:
-      - name: Checkout source code
+      - name: Checkout source code with submodules
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Make build scripts executable
         run: |
