@@ -17,20 +17,19 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Make build scripts executable
+      - name: Run full build inside single shell
         run: |
           chmod +x ./etc/BuildPythonPackage.sh
           chmod +x ./etc/BuildMultiPythonPackage.sh
-
-      - name: Run dependency preparation script
-        run: ./etc/BuildPythonPackage.sh
-
-      - name: Build wheels for all Python versions
-        run: |
+          ./etc/BuildPythonPackage.sh
+      
           export PATH="/opt/conda/bin:$PATH"
+          eval "$(/opt/conda/bin/conda shell.bash hook)"
+      
           for PY_VER in 3.7 3.8 3.9 3.10 3.11 3.12 3.13; do
             ./etc/BuildMultiPythonPackage.sh $PY_VER || exit 1
           done
+
 
       - name: Upload wheels to GitHub Release
         uses: softprops/action-gh-release@v2
