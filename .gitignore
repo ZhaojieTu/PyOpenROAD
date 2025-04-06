@@ -28,6 +28,7 @@ build_linux
 build_mac
 test/results
 flow
+build_*
 
 docs/main
 README2.md
