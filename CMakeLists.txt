@@ -66,8 +66,7 @@ add_custom_command(
 # Add installation target for pip to install the compiled Python library
 add_custom_target(pip_install
     COMMAND ${CMAKE_COMMAND} -E echo "Installing Python packages..."
-    COMMAND pip install python/openroad_core/.
-    COMMAND pip install python/tools/**/. || echo "Some tool packages might not be installed"
+    COMMAND pip install python/openroad_full/.
     DEPENDS pymodule_openroad
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     COMMENT "Installing Python packages with pip"

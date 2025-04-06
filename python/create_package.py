@@ -7,38 +7,33 @@ def create_openroad_core_package(destination):
     package_full_path = os.path.join(destination,"openroad_core")
     os.makedirs(package_full_path,exist_ok=True)
 
-    setup_file_path = os.path.join(package_full_path, "setup.py")
+    setup_file_path = os.path.join(destination, "setup.py")
     with open(setup_file_path, "w") as f:
         f.write("""
 from setuptools import setup, find_packages
-from setuptools.dist import Distribution
-
-class BinaryDistribution(Distribution):
-    def has_ext_modules(foo):
-        return True
 
 setup(
-    name='openroad_core',
+    name='openroad-full',
     version='0.1.0',
     packages=find_packages(),
-    package_data={
-        'openroad_core': ['pyopenroad.so'],  
-    },
     include_package_data=True,
-    zip_safe=False, 
-    description='Shared library wrapper for OpenROAD SWIG Python module',
-    author='Zhaojie Tu',
-    distclass=BinaryDistribution,
+    package_data={
+        'openroad_core': ['*.so'],
+    },
+    install_requires=[
+    ],
+    zip_safe=False,
 )
                 """)
 
-    manifest_file_path = os.path.join(package_full_path, "MANIFEST.in")
+    manifest_file_path = os.path.join(destination, "MANIFEST.in")
     with open(manifest_file_path, "w") as f:
         f.write(f"""
 recursive-include openroad_core *.so
 """)
 
-    inner_package_full_path = os.path.join(package_full_path, "openroad_core")
+#     inner_package_full_path = os.path.join(package_full_path, "openroad_core")
+    inner_package_full_path = package_full_path
     os.makedirs(inner_package_full_path,exist_ok=True)
 
     init_file_path = os.path.join(inner_package_full_path, "__init__.py")
@@ -53,25 +48,26 @@ def create_openroad_package(package_name,python_wrapper,destination):
     package_full_path = os.path.join(destination,package_name)
     os.makedirs(package_full_path,exist_ok=True)
 
-    # Create setup.py file
-    setup_file_path = os.path.join(package_full_path, "setup.py")
-    with open(setup_file_path, "w") as f:
-        f.write(f"""
-from setuptools import setup, find_packages
+#     # Create setup.py file
+#     setup_file_path = os.path.join(package_full_path, "setup.py")
+#     with open(setup_file_path, "w") as f:
+#         f.write(f"""
+# from setuptools import setup, find_packages
 
-setup(
-    name='{package_name}',
-    version='0.1.0',
-    packages=find_packages(),
-    install_requires=[
-        'openroad_core>=0.1.0',
-    ],
-    zip_safe=False,
-    author='Zhaojie Tu'
-    )
-                """)
+# setup(
+#     name='{package_name}',
+#     version='0.1.0',
+#     packages=find_packages(),
+#     install_requires=[
+#         'openroad_core>=0.1.0',
+#     ],
+#     zip_safe=False,
+#     author='Zhaojie Tu'
+#     )
+#                 """)
 
-    inner_package_full_path = os.path.join(package_full_path,package_name)
+#     inner_package_full_path = os.path.join(package_full_path,package_name)
+    inner_package_full_path = package_full_path
     os.makedirs(inner_package_full_path,exist_ok=True)
 
     # Create __init__.py file
@@ -113,25 +109,26 @@ def create_openroad_special_package(destination):
     package_full_path = os.path.join(destination,package_name)
     os.makedirs(package_full_path,exist_ok=True)
 
-    # Create setup.py file
-    setup_file_path = os.path.join(package_full_path, "setup.py")
-    with open(setup_file_path, "w") as f:
-        f.write(f"""
-from setuptools import setup, find_packages
+#     # Create setup.py file
+#     setup_file_path = os.path.join(package_full_path, "setup.py")
+#     with open(setup_file_path, "w") as f:
+#         f.write(f"""
+# from setuptools import setup, find_packages
 
-setup(
-    name='{package_name}',
-    version='0.1.0',
-    packages=find_packages(),
-    install_requires=[
-        'openroad_core>=0.1.0',
-    ],
-    zip_safe=False,
-    author='Zhaojie Tu'
-    )
-                """)
+# setup(
+#     name='{package_name}',
+#     version='0.1.0',
+#     packages=find_packages(),
+#     install_requires=[
+#         'openroad_core>=0.1.0',
+#     ],
+#     zip_safe=False,
+#     author='Zhaojie Tu'
+#     )
+#                 """)
 
-    inner_package_full_path = os.path.join(package_full_path,package_name)
+#     inner_package_full_path = os.path.join(package_full_path,package_name)
+    inner_package_full_path = package_full_path
     os.makedirs(inner_package_full_path,exist_ok=True)
 
     # Create __init__.py file
@@ -171,11 +168,11 @@ if __name__ == "__main__":
 
     src_path = "OpenROAD/src/"
     destination_core = "python"
-
-    create_openroad_core_package(destination_core)   
-
-    destination_tools = os.path.join(destination_core,"tools")
+    destination_tools = os.path.join(destination_core,"openroad-full")
     os.makedirs(destination_tools,exist_ok=True)
+
+    create_openroad_core_package(destination_tools)   
+
 
     create_openroad_special_package(destination_tools)
 
