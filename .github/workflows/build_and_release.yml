@@ -25,10 +25,17 @@ jobs:
         run: |
           chmod +x ./etc/BuildPythonPackage.sh
           chmod +x ./etc/BuildMultiPythonPackage.sh
+          chmod +x ./etc/InstallerConda.sh 
           ./etc/BuildPythonPackage.sh > /dev/null 2>&1
+          mkdir build
+          cd build
+          cmake ..  -DSWIG_EXECUTABLE=/usr/local/bin/swig -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -DBOOST_CSTDFLOAT_NO_LIBQUADMATH_SUPPORT"
+          make -j$(nproc)
+          cd ..
+          ./etc/InstallerConda.sh
       
-          export PATH="/opt/conda/bin:$PATH"
-          eval "$(/opt/conda/bin/conda shell.bash hook)"
+          source /opt/conda/bin/activate
+          conda deactivate
       
           for PY_VER in 3.7 3.8 3.9 3.10 3.11 3.12 3.13; do
             ./etc/BuildMultiPythonPackage.sh $PY_VER || exit 1
