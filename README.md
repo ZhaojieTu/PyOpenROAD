@@ -12,11 +12,20 @@ This project provides a convenient way for users to call OpenROAD functionality 
 
 ## Installation
 
-### System Requirements
+### Direct Installation via pip
+
+Download the appropriate `.whl` file for your Python version from [Releases](https://github.com/ZhaojieTu/PyOpenROAD/releases) and install it with `pip install xxx.whl`
+
+### Build Locally
+#### System Requirements
 
 - Dependencies: Same as those in the OpenROAD project
 
-### Build and Install
+```bash
+./etc/DependencyInstaller.sh
+```
+
+#### Build and Install
 
 ```bash
 # Clone the repository (including submodules)

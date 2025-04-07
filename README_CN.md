@@ -12,11 +12,21 @@ PyOpenroad(PyOR)是**非官方**的[OpenROAD](https://github.com/The-OpenROAD-Pr
 
 ## 安装方式
 
-### 系统要求
+### 通过pip直接安装
+
+在[Release](https://github.com/ZhaojieTu/PyOpenROAD/releases)中下载对应python版本的`.whl`文件,然后运行`pip install xxx.whl`进行安装
+
+
+### 本地编译安装
+
+#### 系统要求
 
 - 依赖：和OpenROAD项目中的依赖一致
+```bash
+./etc/DependencyInstaller.sh
+```
 
-### 编译安装
+#### 编译
 
 ```bash
 # 克隆仓库（包括子模块）
