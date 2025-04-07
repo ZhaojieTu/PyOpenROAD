@@ -11,36 +11,18 @@ def create_openroad_core_package(destination):
     with open(setup_file_path, "w") as f:
         f.write("""
 from setuptools import setup, find_packages
-import os
-import stat
-from setuptools.command.install import install
-
-class MakeExecutable(install):
-    def run(self):
-        install.run(self)
-        exe = os.path.join(self.install_lib, "openroad_core", "bin", "openroad")
-        if os.path.exists(exe):
-            st = os.stat(exe)
-            os.chmod(exe, st.st_mode | stat.S_IEXEC)
 
 setup(
-    name='openroad',
+    name='openroad-full',
     version='0.1.0',
     packages=find_packages(),
     include_package_data=True,
     package_data={
-        'openroad_core': ['*.so', 'bin/openroad'],  
+        'openroad_core': ['*.so'],
     },
-    entry_points={
-        "console_scripts": [
-            "openroad=openroad_core.__main__:main"  
-        ]
-    },
-    install_requires=[],
+    install_requires=[
+    ],
     zip_safe=False,
-    cmdclass={
-        'install': MakeExecutable
-    }
 )
                 """)
 
@@ -48,7 +30,6 @@ setup(
     with open(manifest_file_path, "w") as f:
         f.write(f"""
 recursive-include openroad_core *.so
-include openroad_core/bin/openroad
 """)
 
 #     inner_package_full_path = os.path.join(package_full_path, "openroad_core")
@@ -59,25 +40,8 @@ include openroad_core/bin/openroad
     with open(init_file_path, "w") as f:
         f.write("")    
 
-    main_file_path = os.path.join(inner_package_full_path, "__main__.py")
-    with open(main_file_path, "w") as f:
-        f.write("""
-import os
-import subprocess
-import sys
-
-def main():
-    exe_path = os.path.join(os.path.dirname(__file__), "bin", "openroad")
-    sys.exit(subprocess.call([exe_path] + sys.argv[1:]))
-""")
-
     inner_core_lib_path = os.path.join(inner_package_full_path, "pyopenroad.so") 
-    inner_bin_path = os.path.join(inner_package_full_path, "bin")   
-    os.makedirs(inner_bin_path,exist_ok=True)
     shutil.copy(core_lib_path, inner_core_lib_path)
-
-    openroad_exe_path = "OpenROAD/src/openroad"
-    shutil.copy(openroad_exe_path, inner_bin_path)
 
 
 def create_openroad_package(package_name,python_wrapper,destination):
