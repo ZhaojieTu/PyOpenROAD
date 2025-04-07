@@ -12,7 +12,7 @@ PyOpenroad(PyOR)是**非官方**的[OpenROAD](https://github.com/The-OpenROAD-Pr
 
 ## 安装方式
 
-### 通过pip直接安装
+### 通过pip直接安装(推荐)
 
 在[Release](https://github.com/ZhaojieTu/PyOpenROAD/releases)中下载对应python版本的`.whl`文件,然后运行`pip install xxx.whl`进行安装
 
