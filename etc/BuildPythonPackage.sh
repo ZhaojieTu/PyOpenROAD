@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-./etc/DependencyInstaller.sh
-pip install swig==4.0.2
+./etc/ManylinuxDependencyInstaller.sh
+ln -sf /usr/local/bin/tclsh8.6 /usr/local/bin/tclsh
+yum install -y tcl-tclreadline-devel tcl-tclreadline
+pip3 install swig==4.0.2
 
 

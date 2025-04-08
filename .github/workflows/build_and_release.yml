@@ -35,7 +35,7 @@ jobs:
 
           mkdir build
           cd build
-          cmake .. -DSWIG_EXECUTABLE=/usr/local/bin/swig -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -DBOOST_CSTDFLOAT_NO_LIBQUADMATH_SUPPORT"
+          cmake .. -DSWIG_EXECUTABLE=/usr/local/bin/swig -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -DBOOST_CSTDFLOAT_NO_LIBQUADMATH_SUPPORT" -DTCL_LIBRARY=/usr/local/lib/libtcl8.6.so -DTCL_INCLUDE_PATH=/usr/local/include -DTCL_TCLSH=/usr/local/bin/tclsh8.6
           make -j$(nproc)
           cd ..
 
