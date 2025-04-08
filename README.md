@@ -12,7 +12,7 @@ This project provides a convenient way for users to call OpenROAD functionality 
 
 ## Installation
 
-### Direct Installation via pip
+### Direct Installation via pip(Recommend)
 
 Download the appropriate `.whl` file for your Python version from [Releases](https://github.com/ZhaojieTu/PyOpenROAD/releases) and install it with `pip install xxx.whl`
 
