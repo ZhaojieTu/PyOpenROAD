@@ -50,8 +50,33 @@ jobs:
             ./etc/BuildMultiPythonPackage.sh ${{ matrix.python }}
           "
 
-      - name: Upload wheel
+      - name: Upload wheel artifact
         uses: actions/upload-artifact@v4
         with:
           name: wheel-${{ matrix.python }}
           path: dist/*.whl
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all wheel artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist/
+
+      - name: Merge all wheels into one folder
+        run: |
+          mkdir all_wheels
+          find dist -name "*.whl" -exec cp {} all_wheels/ \;
+
+      - name: Upload wheels to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          body: |
+            Auto-generated release for tag ${{ github.ref_name }}
+          files: all_wheels/*.whl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
