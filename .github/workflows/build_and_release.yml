@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
     steps:
       - name: Checkout source with submodules
@@ -40,7 +40,9 @@ jobs:
               -DCMAKE_CXX_FLAGS='-DBOOST_CSTDFLOAT_NO_LIBQUADMATH_SUPPORT' \
               -DTCL_LIBRARY=/usr/local/lib/libtcl8.6.so \
               -DTCL_INCLUDE_PATH=/usr/local/include \
-              -DTCL_TCLSH=/usr/local/bin/tclsh8.6
+              -DTCL_TCLSH=/usr/local/bin/tclsh8.6 \
+              -DUSE_MANYLINUX_PACKAGE=ON
+
             make -j\$(nproc)
             cd ..
 

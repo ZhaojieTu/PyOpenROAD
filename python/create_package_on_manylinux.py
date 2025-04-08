@@ -29,7 +29,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     package_data={
-        'openroad_core': ['*.so', 'bin/openroad'],  
+        'openroad_core': ['lib/*.so*', 'bin/openroad',"tcl/*"],  
     },
     entry_points={
         "console_scripts": [
@@ -49,6 +49,8 @@ setup(
         f.write(f"""
 recursive-include openroad_core *.so
 include openroad_core/bin/openroad
+include openroad_core/lib/*
+recursive-include openroad_core/tcl *
 """)
 
 #     inner_package_full_path = os.path.join(package_full_path, "openroad_core")
@@ -64,11 +66,21 @@ include openroad_core/bin/openroad
         f.write("""
 import os
 import subprocess
+import pathlib
 import sys
 
 def main():
-    exe_path = os.path.join(os.path.dirname(__file__), "bin", "openroad")
-    sys.exit(subprocess.call([exe_path] + sys.argv[1:]))
+    here = pathlib.Path(__file__).parent.resolve()
+    tcl_dir = here / "tcl" / "tcl8.6"
+    tclreadline_dir = here / "tcl" / "tclreadline2.1.0"
+    lib_dir = here / "lib"
+    bin_path = here / "bin" / "openroad"
+
+    os.environ["TCL_LIBRARY"] = str(tcl_dir)
+    os.environ["TCLLIBPATH"] = str(tclreadline_dir)
+    os.environ["LD_LIBRARY_PATH"] = f"{lib_dir}:{os.environ.get('LD_LIBRARY_PATH', '')}"
+
+    os.execv(str(bin_path), [str(bin_path)] + sys.argv[1:])
 """)
 
     inner_core_lib_path = os.path.join(inner_package_full_path, "pyopenroad.so") 
@@ -78,6 +90,26 @@ def main():
 
     openroad_exe_path = "OpenROAD/src/openroad"
     shutil.copy(openroad_exe_path, inner_bin_path)
+
+    inner_lib_path = os.path.join(inner_package_full_path, "lib")
+    os.makedirs(inner_lib_path,exist_ok=True)
+
+    tcl_path = "/usr/local/lib/tcl8.6"
+    tcl_lib_path = "/usr/local/lib/libtcl8.6.so"
+    
+    tclreadline_path = "/usr/lib64/tcl8.5/tclreadline2.1.0"
+    tclreadline_lib_path = "/usr/lib64/tcl8.5/tclreadline2.1.0/libtclreadline.so"
+
+    inner_tcl_path = os.path.join(inner_package_full_path, "tcl")
+    os.makedirs(inner_tcl_path,exist_ok=True)
+    inner_tcl_path_tcl8_6 = os.path.join(inner_tcl_path, "tcl8.6")
+    inner_tcl_path_tclreadline2_1_0 = os.path.join(inner_tcl_path, "tclreadline2.1.0")
+    shutil.copytree(tcl_path, inner_tcl_path_tcl8_6)
+    shutil.copytree(tclreadline_path, inner_tcl_path_tclreadline2_1_0)
+
+    shutil.copy(tcl_lib_path, inner_lib_path)
+    shutil.copy(tclreadline_lib_path, inner_lib_path)
+
 
 
 def create_openroad_package(package_name,python_wrapper,destination):

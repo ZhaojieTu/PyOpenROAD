@@ -8,13 +8,23 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/OpenROAD/src/cmake")
 
 option(USE_SYSTEM_BOOST "Use system shared Boost libraries" ON)
+option(USE_MANYLINUX_PACKAGE "Use manylinux package creation script" OFF)
 
-# Copy the create_package.py script to the build directory
-configure_file(
-    ${CMAKE_SOURCE_DIR}/python/create_package.py
-    ${CMAKE_BINARY_DIR}/create_package.py
-    COPYONLY
-)
+if(USE_MANYLINUX_PACKAGE)
+    message(STATUS "Using manylinux package creation script")
+    configure_file(
+        ${CMAKE_SOURCE_DIR}/python/create_package_on_manylinux.py
+        ${CMAKE_BINARY_DIR}/create_package.py
+        COPYONLY
+    )
+else()
+    message(STATUS "Using standard package creation script")
+    configure_file(
+        ${CMAKE_SOURCE_DIR}/python/create_package.py
+        ${CMAKE_BINARY_DIR}/create_package.py
+        COPYONLY
+    )
+endif()
 
 add_subdirectory(OpenROAD)
 
