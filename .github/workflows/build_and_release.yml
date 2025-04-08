@@ -12,61 +12,46 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: quay.io/pypa/manylinux2014_x86_64
 
     strategy:
       matrix:
         python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
     steps:
-      - name: Checkout source code with submodules
+      - name: Checkout source with submodules
         uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: Setup build environment and compile core
+      - name: Pull manylinux2014 image
+        run: docker pull quay.io/pypa/manylinux2014_x86_64
+
+      - name: Build inside manylinux container
         run: |
-          chmod +x ./etc/BuildPythonPackage.sh
-          chmod +x ./etc/BuildMultiPythonPackage.sh
-          chmod +x ./etc/InstallerConda.sh 
+          docker run --rm -v ${{ github.workspace }}:/io quay.io/pypa/manylinux2014_x86_64 bash -c "
+            cd /io
+            chmod +x ./etc/BuildPythonPackage.sh ./etc/BuildMultiPythonPackage.sh ./etc/InstallerConda.sh
 
-          ./etc/BuildPythonPackage.sh > /dev/null 2>&1
+            ./etc/BuildPythonPackage.sh > /dev/null 2>&1
 
-          mkdir build
-          cd build
-          cmake .. -DSWIG_EXECUTABLE=/usr/local/bin/swig -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -DBOOST_CSTDFLOAT_NO_LIBQUADMATH_SUPPORT" -DTCL_LIBRARY=/usr/local/lib/libtcl8.6.so -DTCL_INCLUDE_PATH=/usr/local/include -DTCL_TCLSH=/usr/local/bin/tclsh8.6
-          make -j$(nproc)
-          cd ..
+            mkdir build && cd build
+            cmake .. \
+              -DSWIG_EXECUTABLE=/usr/local/bin/swig \
+              -DCMAKE_CXX_FLAGS='-DBOOST_CSTDFLOAT_NO_LIBQUADMATH_SUPPORT' \
+              -DTCL_LIBRARY=/usr/local/lib/libtcl8.6.so \
+              -DTCL_INCLUDE_PATH=/usr/local/include \
+              -DTCL_TCLSH=/usr/local/bin/tclsh8.6
+            make -j\$(nproc)
+            cd ..
 
-          ./etc/InstallerConda.sh
+            ./etc/InstallerConda.sh
+            source /opt/conda/bin/activate
+            conda deactivate
+            ./etc/BuildMultiPythonPackage.sh ${{ matrix.python }}
+          "
 
-      - name: Activate conda and build for Python ${{ matrix.python }}
-        run: |
-          source /opt/conda/bin/activate
-          conda deactivate
-          ./etc/BuildMultiPythonPackage.sh ${{ matrix.python }}
-
-      - name: Upload wheel artifact
+      - name: Upload wheel
         uses: actions/upload-artifact@v4
         with:
           name: wheel-${{ matrix.python }}
-          path: /io/dist/*.whl
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Download all wheel artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: dist/
-
-      - name: Upload all wheels to GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/**/*.whl
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          path: dist/*.whl
