@@ -29,7 +29,7 @@ Download the appropriate `.whl` file for your Python version from [Releases](htt
 
 ```bash
 # Clone the repository (including submodules)
-git clone --recursive https://github.com/your-username/PyOpenROAD.git
+git clone --recursive https://github.com/ZhaojieTu/PyOpenROAD.git
 cd PyOpenROAD
 
 # Build and install
