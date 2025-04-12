@@ -68,6 +68,7 @@ import os
 import subprocess
 import pathlib
 import sys
+import sysconfig
 
 def main():
     here = pathlib.Path(__file__).parent.resolve()
@@ -76,9 +77,11 @@ def main():
     lib_dir = here / "lib"
     bin_path = here / "bin" / "openroad"
 
+    python_lib_dir = pathlib.Path(sysconfig.get_config_var('LIBDIR'))
+
     os.environ["TCL_LIBRARY"] = str(tcl_dir)
     os.environ["TCLLIBPATH"] = str(tclreadline_dir)
-    os.environ["LD_LIBRARY_PATH"] = f"{lib_dir}:{os.environ.get('LD_LIBRARY_PATH', '')}"
+    os.environ["LD_LIBRARY_PATH"] = f"{lib_dir}:{python_lib_dir}:{os.environ.get('LD_LIBRARY_PATH', '')}"
 
     os.execv(str(bin_path), [str(bin_path)] + sys.argv[1:])
 """)

@@ -37,7 +37,7 @@ build_for_python() {
   
   python setup.py bdist_wheel --python-tag=$PY_ABI_TAG
   
-  auditwheel repair --disable-isa-ext-check dist/*.whl -w /io/dist
+  auditwheel repair dist/*.whl -w /io/dist
 
   cd ../../..
   
