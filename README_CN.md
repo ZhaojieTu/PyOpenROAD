@@ -30,7 +30,7 @@ PyOpenroad(PyOR)是**非官方**的[OpenROAD](https://github.com/The-OpenROAD-Pr
 
 ```bash
 # 克隆仓库（包括子模块）
-git clone --recursive https://github.com/your-username/PyOpenROAD.git
+git clone --recursive https://github.com/ZhaojieTu/PyOpenROAD.git
 cd PyOpenROAD
 
 # 编译和安装
