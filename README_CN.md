@@ -2,13 +2,16 @@
 
 [English](README.md) | [中文](README_CN.md)
 
-PyOpenroad(PyOR)是**非官方**的[OpenROAD](https://github.com/The-OpenROAD-Project/OpenROAD)的外部Python库，可以直接通过`pip install`安装在本地的Python解释器中，而不是只能在OpenROAD环境中使用。
+**PyOpenROAD (PyOR)** 是一个 **非官方** 的 [OpenROAD](https://github.com/The-OpenROAD-Project/OpenROAD) Python 接口封装项目，它将 OpenROAD 打包为一个可通过 `pip install` 安装的标准 `.whl` 文件，使用户无需繁琐的依赖安装与源码编译，即可在本地 Python 环境中快速集成使用。
 
 ## 项目简介
 
-本项目提供了一种简便方式，让用户能够在自己的Python环境中调用OpenROAD的功能，而无需完全安装OpenROAD工具套件。其API使用方式和`openroad -python`启动的Python环境完全一致。
+本项目提供一种更加灵活、轻量的方式来安装调用 OpenROAD 的各项功能：
+1. 无需使用 OpenROAD 官方提供的发行包或容器镜像，安装不依赖特定 Linux 发行版，兼容主流系统。
+2. 不仅包含 OpenROAD 主程序的可执行文件，同时封装了其内置 Python API，使用户可直接在任何 Python 脚本中导入并调用，而无需通过 `openroad -python` 启动环境。
+3. 本项目通过 Git Submodule 引入上游 OpenROAD 仓库，理论上支持不同版本的 OpenROAD 编译打包(未进行测试)。用户可根据需求手动切换 submodule 中的 commit，并重新构建 `.whl` 包以适配特定版本。
 
-- 当前的OpenROAD版本：commit hash为`a008522d88b669ac4c985609533cf5a3d2649222`
+- 当前的 OpenROAD commit hash：`a008522d88b669ac4c985609533cf5a3d2649222`
 
 ## 安装方式
 
@@ -43,8 +46,13 @@ make pip_install  # 将编译好的Python包安装在本地的Python路径中
 
 ## 使用示例
 
-安装完成后，您可以在Python中像这样使用：
+安装完成后，您可以在通过如下方式使用：
+1. 命令行启动`openroad`
+```bash
+openroad --version
+```
 
+2. 在python中调用,`python test.py`
 ```python
 from openroad import Design,Tech
 import odb 
